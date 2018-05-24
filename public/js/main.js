@@ -14,6 +14,21 @@
 		offset: $(window).height() / 2
 	});
 
+	$('#sendform').on("click", (e) => {
+		e.preventDefault()
+		let name = $("#inputname").text()
+		let email = $("inputemail").text()
+		let cover = $("coverletter").text()
+
+		$.ajax({type: "POST",
+				url:"join",
+				data: {name: "name", email: "email", cover: "cover"},
+				success: (data) => {
+					console.log(data)
+				}})
+
+	})
+
 	///////////////////////////
 	// Smooth scroll
 	$("#nav .main-nav a[href^='#']").on('click', function(e) {
