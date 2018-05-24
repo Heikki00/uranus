@@ -14,17 +14,43 @@
 		offset: $(window).height() / 2
 	});
 
+	$("#radio1").change(function() {
+		if(this.checked){
+			$('#sendform').attr("disabled", false)
+		}
+	})
+
+	$("#radio2").change(function() {
+		if(this.checked){
+			$('#sendform').attr("disabled", true)
+		}
+	})
+
+
 	$('#sendform').on("click", (e) => {
 		e.preventDefault()
-		let name = $("#inputname").text()
-		let email = $("inputemail").text()
-		let cover = $("coverletter").text()
-
+		let name1 = $("#inputname").val()
+		let email1 = $("#inputemail").val()
+		let cover1 = $("#coverletter").val()
+		console.log(name1)
 		$.ajax({type: "POST",
 				url:"join",
-				data: {name: "name", email: "email", cover: "cover"},
+				contentType: 'application/json', 
+				data: JSON.stringify({name: name1, email: email1, cover: cover1}),
 				success: (data) => {
-					console.log(data)
+					var messageAlert = 'alert-' + data.type;
+                    var messageText = data.message;
+
+                    // let's compose Bootstrap alert box HTML
+                    var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + messageText + '</div>';
+                    
+                    // If we have messageAlert and messageText
+                    if (messageAlert && messageText) {
+                        // inject the alert to .messages div in our form
+                        $('#contact-form').find('.messages').html(alertBox);
+                        // empty the form
+                        $('#contact-form')[0].reset();
+                    }
 				}})
 
 	})
